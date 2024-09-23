@@ -1,0 +1,37 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Thread {
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+  posts     Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  content   String?
+  threadId  Int
+  thread    Thread   @relation(fields: [threadId], references: [id])
+  userId    Int      // @default(0)       // デフォルト値を追加
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) // デフォルト値を追加
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
