@@ -51,6 +51,7 @@ export async function POST(
 
     return NextResponse.json(post, { status: 201 });
   } catch (error) {
+    console.error("投稿の取得エラー:", error); // 詳細なエラーログを出力
     return NextResponse.json(
       { error: "投稿の保存に失敗しました" },
       { status: 500 }
